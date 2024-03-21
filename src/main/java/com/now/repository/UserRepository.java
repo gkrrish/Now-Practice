@@ -4,12 +4,12 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.now.entity.User;
+import com.now.entity.UserDetails;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<UserDetails, String> {
 
 	boolean existsByMobileNumber(String mobileNumber);
 
-	Optional<User> findByMobileNumber(String mobileNumber);
+	Optional<UserDetails > findByMobileNumber(String mobileNumber);
 
 }

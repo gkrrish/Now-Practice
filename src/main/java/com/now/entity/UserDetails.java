@@ -2,21 +2,23 @@ package com.now.entity;
 
 import java.util.Objects;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "USER_DETAILS")
-public class User {
+public class UserDetails  {
 	@Id
+	@Column(name = "mobile_number")
 	private String mobileNumber;
 	private String languages;
 	private String selectedNewspapers;
-	public User() {
+	public UserDetails () {
 	}
 
-	public User(String mobileNumber, String languages, String selectedNewspapers) {
+	public UserDetails (String mobileNumber, String languages, String selectedNewspapers) {
 		this.mobileNumber = mobileNumber;
 		this.languages = languages;
 		this.selectedNewspapers = selectedNewspapers;
@@ -59,7 +61,7 @@ public class User {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		User other = (User) obj;
+		UserDetails  other = (UserDetails ) obj;
 		return Objects.equals(languages, other.languages) && Objects.equals(mobileNumber, other.mobileNumber)
 				&& Objects.equals(selectedNewspapers, other.selectedNewspapers);
 	}

@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.now.entity.User;
+import com.now.entity.UserDetails;
 import com.now.repository.UserRepository;
 import com.now.response.ExistingMemberResponse;
 import com.now.service.UserRegistrationService;
@@ -27,8 +27,8 @@ public class UserRegistrationServiceImpl implements UserRegistrationService {
 
 	@Override
 	public ExistingMemberResponse getSubscriptionDetails(String mobileNumber) {
-		Optional<User> userOptional = userRepository.findByMobileNumber(mobileNumber);
-		User user = new User();
+		Optional<UserDetails > userOptional = userRepository.findByMobileNumber(mobileNumber);
+		UserDetails  user = new UserDetails ();
 		if (userOptional.isPresent()) {
 			user = userOptional.get();
 		}
