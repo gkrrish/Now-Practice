@@ -1,0 +1,79 @@
+
+CREATE TABLE MASTER_COUNTRIES (
+    country_id INT PRIMARY KEY,
+    country_name VARCHAR(100),
+    telephone_code VARCHAR(20) -- Adjust the size according to your needs
+);
+
+CREATE TABLE MASTER_STATES (
+    state_id INT PRIMARY KEY,
+    state_name VARCHAR(100),
+    country_id INT,
+    FOREIGN KEY (country_id) REFERENCES MASTER_COUNTRIES(country_id)
+);
+
+CREATE TABLE MASTER_TELANGANA_DISTRICTS (
+    district_id INT PRIMARY KEY,
+    district_name VARCHAR(100),
+    state_id INT,
+    FOREIGN KEY (state_id) REFERENCES MASTER_STATES(state_id)
+);
+CREATE TABLE MASTER_ANDHRAPRADESH_DISTRICTS (
+    district_id INT PRIMARY KEY,
+    district_name VARCHAR(100),
+    state_id INT,
+    FOREIGN KEY (state_id) REFERENCES MASTER_STATES(state_id)
+);
+
+CREATE TABLE MASTER_TELANGANA_MANDALS (
+    mandal_id INT PRIMARY KEY,
+    mandal_name VARCHAR(100),
+    district_id INT,
+    FOREIGN KEY (district_id) REFERENCES MASTER_TELANGANA_DISTRICTS(district_id)
+);
+CREATE TABLE MASTER_ANDHRAPRADESH_MANDALS (
+    mandal_id INT PRIMARY KEY,
+    mandal_name VARCHAR(100),
+    district_id INT,
+    FOREIGN KEY (district_id) REFERENCES MASTER_ANDHRAPRADESH_DISTRICTS(district_id)
+);
+CREATE TABLE MASTER_STATEWISE_TELANGANA_LOCATIONS (
+    location_id INT PRIMARY KEY,
+    location_name VARCHAR(100),
+    country_id INT,
+    state_id INT,
+    district_id INT,
+    mandal_id INT,
+    FOREIGN KEY (country_id) REFERENCES MASTER_COUNTRIES(country_id),
+    FOREIGN KEY (state_id) REFERENCES MASTER_STATES(state_id),
+    FOREIGN KEY (district_id) REFERENCES MASTER_TELANGANA_DISTRICTS(district_id),
+    FOREIGN KEY (mandal_id) REFERENCES MASTER_TELANGANA_MANDALS(mandal_id)
+);
+
+
+-- Create the function generate_location_name in PL/SQL
+CREATE OR REPLACE FUNCTION generate_location_name(country_id INT, state_id INT, district_id INT, mandal_id INT)
+RETURN VARCHAR2 AS
+    country_name VARCHAR2(100);
+    state_name VARCHAR2(100);
+    district_name VARCHAR2(100);
+    mandal_name VARCHAR2(100);
+    result VARCHAR2(500);
+BEGIN
+    SELECT country_name INTO country_name FROM MASTER_COUNTRIES WHERE country_id = generate_location_name.country_id;
+    SELECT state_name INTO state_name FROM MASTER_STATES WHERE state_id = generate_location_name.state_id;
+    SELECT district_name INTO district_name FROM MASTER_TELANGANA_DISTRICTS WHERE district_id = generate_location_name.district_id;
+    SELECT mandal_name INTO mandal_name FROM MASTER_TELANGANA_MANDALS WHERE mandal_id = generate_location_name.mandal_id;
+    
+    result := country_name || '_' || state_name || '_' || district_name || '_' || mandal_name;
+    
+    RETURN result;
+END;
+/
+
+DECLARE
+    loc_name VARCHAR2(100);
+BEGIN
+    loc_name := generate_location_name(9, 24, 3, 1); -- Example IDs, replace with actual IDs
+    DBMS_OUTPUT.PUT_LINE('Location Name: ' || loc_name);
+END;
