@@ -22,8 +22,6 @@ public class UserRegistrationController {
 	@Autowired
 	private UserRegistrationService userRegistrationService;
 
-	// this code seems to be not standard, later it should be re-factored, initial end-points only these are.
-
 	@PostMapping("/welcome")
 	public ResponseEntity<?> welcomeUser(@RequestBody WelcomeRequest request) {
 
