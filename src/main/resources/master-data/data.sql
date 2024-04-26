@@ -11,6 +11,10 @@ VALUES
     (9, 'India', '+91'),
     (10, 'Brazil', '+55');
 
+INSERT INTO MASTER_INDIAN_NEWSPAPER_LANGUAGES (language_id, language_name) VALUES (1, 'English');
+INSERT INTO MASTER_INDIAN_NEWSPAPER_LANGUAGES (language_id, language_name) VALUES (2, 'Hindi');
+INSERT INTO MASTER_INDIAN_NEWSPAPER_LANGUAGES (language_id, language_name) VALUES (3, 'Telugu');
+INSERT INTO MASTER_INDIAN_NEWSPAPER_LANGUAGES (language_id, language_name) VALUES (4, 'Tamil');
 
 INSERT INTO MASTER_STATES (state_id, state_name, country_id)
 VALUES
@@ -128,5 +132,5 @@ INSERT INTO MASTER_STATEWISE_TELANGANA_LOCATIONS (
     1   -- Mandal ID for the mandal
 );
 
-
-
+INSERT INTO VENDOR_TELANGANA_EENADU (newspaper_id, newspaper_name, upload_date, mandal_id, pdf_location)
+VALUES (1, 'Telangana Eenadu-Hyderabad', TO_DATE('2024-04-28', 'YYYY-MM-DD'), 1, 's3://bucket-name/mandal1/newspaper1.pdf');

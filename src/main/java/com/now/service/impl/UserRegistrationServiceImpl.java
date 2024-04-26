@@ -27,11 +27,15 @@ public class UserRegistrationServiceImpl implements UserRegistrationService {
 
 	@Override
 	public ExistingMemberResponse getSubscriptionDetails(String mobileNumber) {
-		Optional<UserDetails > userOptional = userRepository.findByMobileNumber(mobileNumber);
-		UserDetails  user = new UserDetails ();
-		if (userOptional.isPresent()) {
-			user = userOptional.get();
-		}
+		/*
+		 * Optional<UserDetails > userOptional =
+		 * userRepository.findByMobileNumber(mobileNumber); UserDetails user = new
+		 * UserDetails (); if (userOptional.isPresent()) { user = userOptional.get(); }
+		 */
+		UserDetails user=new UserDetails();
+		user.setLanguages("Telugu");
+		user.setMobileNumber(mobileNumber);
+		user.setSelectedNewspapers("Telugu");
 		ExistingMemberResponse response = new ExistingMemberResponse();
 		response.setMobileNumber(user.getMobileNumber());
 		response.setLanguages(user.getLanguages());

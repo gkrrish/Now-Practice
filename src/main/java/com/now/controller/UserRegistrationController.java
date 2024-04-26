@@ -24,7 +24,7 @@ public class UserRegistrationController {
 
 	@PostMapping("/welcome")
 	public ResponseEntity<?> welcomeUser(@RequestBody WelcomeRequest request) {
-
+		/*
 		String validMobileNumber = null;
 		validMobileNumber = PhoneNumberUtil.validateMobileNumber(request.getMobileNumber());
 
@@ -41,6 +41,20 @@ public class UserRegistrationController {
 			welcomeResponse.setLanguage(StringUtil.LANGUAGE_LIST);
 			return ResponseEntity.ok(welcomeResponse);
 		}
-
+		*/
+		ExistingMemberResponse subscriptionDetails = userRegistrationService.getSubscriptionDetails(request.getMobileNumber());
+		if(subscriptionDetails.getSelectedNewspapers().length()>1) {//temporary method
+			return ResponseEntity.ok(subscriptionDetails);
+		}else {
+			WelcomeResponse welcomeResponse = new WelcomeResponse();
+			welcomeResponse.setMessage("Welcome ! News on whatsApp service, we glad to hear! that you are intrested! please select the below newspapers we are going to send on scheuled time daily" );
+			welcomeResponse.setLanguage(StringUtil.LANGUAGE_LIST);
+			return ResponseEntity.ok(welcomeResponse);
+		}
 	}
 }
+//display the news papers list for below 
+//by language
+//by category
+//by location
+

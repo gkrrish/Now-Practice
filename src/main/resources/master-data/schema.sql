@@ -4,6 +4,11 @@ CREATE TABLE MASTER_COUNTRIES (
     country_name VARCHAR(100),
     telephone_code VARCHAR(20) -- Adjust the size according to your needs
 );
+CREATE TABLE MASTER_INDIAN_NEWSPAPER_LANGUAGES (
+    language_id INT PRIMARY KEY,
+    language_name VARCHAR(100)
+);
+
 
 CREATE TABLE MASTER_STATES (
     state_id INT PRIMARY KEY,
@@ -49,6 +54,79 @@ CREATE TABLE MASTER_STATEWISE_TELANGANA_LOCATIONS (
     FOREIGN KEY (district_id) REFERENCES MASTER_TELANGANA_DISTRICTS(district_id),
     FOREIGN KEY (mandal_id) REFERENCES MASTER_TELANGANA_MANDALS(mandal_id)
 );
+CREATE TABLE VENDOR_TELANGANA_EENADU (
+    newspaper_id INT PRIMARY KEY,
+    newspaper_name VARCHAR(100),
+    upload_date DATE,
+    mandal_id INT,
+    pdf_location VARCHAR(255),
+    newspaper_language INT, -- Assuming this is the foreign key column
+    FOREIGN KEY (mandal_id) REFERENCES MASTER_TELANGANA_MANDALS(mandal_id),
+    FOREIGN KEY (newspaper_language) REFERENCES MASTER_INDIAN_NEWSPAPER_LANGUAGES(language_id)
+);
+
+
+
+CREATE TABLE Users (
+    UserID NUMBER(10) PRIMARY KEY,
+    Username VARCHAR2(50),
+    Age NUMBER(3),
+    Gender VARCHAR2(10) CHECK (Gender IN ('Male', 'Female', 'Other')),
+    Location VARCHAR2(100),
+    RegistrationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Active CHAR(1) DEFAULT 'Y' CHECK (Active IN ('Y', 'N'))
+);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 -- Create the function generate_location_name in PL/SQL
