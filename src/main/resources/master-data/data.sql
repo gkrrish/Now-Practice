@@ -134,3 +134,44 @@ INSERT INTO MASTER_STATEWISE_TELANGANA_LOCATIONS (
 
 INSERT INTO VENDOR_TELANGANA_EENADU (newspaper_id, newspaper_name, upload_date, mandal_id, pdf_location)
 VALUES (1, 'Telangana Eenadu-Hyderabad', TO_DATE('2024-04-28', 'YYYY-MM-DD'), 1, 's3://bucket-name/mandal1/newspaper1.pdf');
+
+
+INSERT INTO USER_DETAILS(UserID, Username, Age, Gender, Location, RegistrationDate, Active)
+VALUES (1, 'Krishna', 30, 'Male', 'Hyderabad', TIMESTAMP '2024-04-27 10:00:00', 'Y');
+
+INSERT INTO USER_DETAILS(UserID, Username, Age, Gender, Location, RegistrationDate, Active)
+VALUES (2, 'Gkrishna', 25, 'Male', 'Hyderabad', TIMESTAMP '2024-04-26 15:30:00', 'Y');
+
+-----------------------------------------------
+TRUNCATE TABLE MASTER_BATCH_JOBS;
+
+INSERT INTO MASTER_BATCH_JOBS (BATCH_ID, DELIVERY_TIME)
+SELECT ROWNUM AS BATCH_ID,
+       TO_CHAR(TIMESTAMP '2024-04-28 04:00:00' + INTERVAL '30' MINUTE * (ROWNUM - 1), 'HH:MI AM') AS DELIVERY_TIME
+FROM dual
+CONNECT BY LEVEL <= 48;
+
+COMMIT;
+----------------------------------------------
+
+INSERT INTO VENDOR_TELANGANA_EENADU (newspaper_id, mandal_id, newspaper_name, newspaper_language, SubscriptionType, SubscriptionFee)
+VALUES (1, 1, 'Telangana Eenadu-Hyderabad', 3, 'FREE', 0.00);
+
+INSERT INTO VENDOR_TELANGANA_EENADU (newspaper_id, mandal_id, newspaper_name, newspaper_language, SubscriptionType, SubscriptionFee)
+VALUES (2, 2, 'Telangana Eenadu-Ghatkesar', 3, 'PAID', 100.00);
+
+
+INSERT INTO VENDOR_DYNAMIC_GENERIC (dynamic_id, eenadu_id)
+VALUES (1, 1);
+INSERT INTO VENDOR_DYNAMIC_GENERIC (dynamic_id, eenadu_id)
+VALUES (2, 2);
+
+INSERT INTO UX_USER_SUBSCRIPTION (user_id, newspaper_id, mandal_id, batch_id, user_eligible)
+VALUES (1, 1, 1, 1, 1);
+
+INSERT INTO UX_USER_SUBSCRIPTION (user_id, newspaper_id, mandal_id, batch_id, user_eligible)
+VALUES (2, 2, 2, 20, 1);
+
+
+
+

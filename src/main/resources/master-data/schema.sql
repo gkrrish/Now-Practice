@@ -54,20 +54,11 @@ CREATE TABLE MASTER_STATEWISE_TELANGANA_LOCATIONS (
     FOREIGN KEY (district_id) REFERENCES MASTER_TELANGANA_DISTRICTS(district_id),
     FOREIGN KEY (mandal_id) REFERENCES MASTER_TELANGANA_MANDALS(mandal_id)
 );
-CREATE TABLE VENDOR_TELANGANA_EENADU (
-    newspaper_id INT PRIMARY KEY,
-    newspaper_name VARCHAR(100),
-    upload_date DATE,
-    mandal_id INT,
-    pdf_location VARCHAR(255),
-    newspaper_language INT, -- Assuming this is the foreign key column
-    FOREIGN KEY (mandal_id) REFERENCES MASTER_TELANGANA_MANDALS(mandal_id),
-    FOREIGN KEY (newspaper_language) REFERENCES MASTER_INDIAN_NEWSPAPER_LANGUAGES(language_id)
-);
 
 
 
-CREATE TABLE Users (
+
+CREATE TABLE USER_DETAILS(
     UserID NUMBER(10) PRIMARY KEY,
     Username VARCHAR2(50),
     Age NUMBER(3),
@@ -79,51 +70,48 @@ CREATE TABLE Users (
 
 
 
+CREATE TABLE MASTER_BATCH_JOBS (
+    BATCH_ID NUMBER PRIMARY KEY,
+    DELIVERY_TIME VARCHAR2(20)		,
+    INTERVAL_MINUTES NUMBER(2) DEFAULT 30
+);
 
 
 
+CREATE TABLE VENDOR_TELANGANA_EENADU (
+    newspaper_id INT PRIMARY KEY,
+    mandal_id INT,
+    newspaper_name VARCHAR(100),
+    newspaper_language INT,
+    SubscriptionType VARCHAR2(10) CHECK (SubscriptionType IN ('FREE', 'PAID')),
+    SubscriptionFee DECIMAL(10, 2),
+    CONSTRAINT CHK_SubscriptionFee CHECK (
+        (UPPER(SubscriptionType) = 'FREE' AND SubscriptionFee = 0) OR
+        (UPPER(SubscriptionType) = 'PAID' AND SubscriptionFee > 0)
+    ),
+    FOREIGN KEY (mandal_id) REFERENCES MASTER_TELANGANA_MANDALS(mandal_id),
+    FOREIGN KEY (newspaper_language) REFERENCES MASTER_INDIAN_NEWSPAPER_LANGUAGES(language_id)
+);
 
+-- Create the VENDOR_DYNAMIC_GENERIC table
+CREATE TABLE VENDOR_DYNAMIC_GENERIC (
+    dynamic_id INT PRIMARY KEY,
+    eenadu_id INT NOT NULL,
+    CONSTRAINT FK_EenaduId FOREIGN KEY (eenadu_id) REFERENCES VENDOR_TELANGANA_EENADU(newspaper_id)
+);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+CREATE TABLE UX_USER_SUBSCRIPTION (
+    user_id INT,
+    newspaper_id INT,
+    mandal_id INT,
+    batch_id NUMBER,
+    user_eligible NUMBER(1,0) DEFAULT 1,
+    
+    CONSTRAINT PK_UX_USER_SUBSCRIPTION PRIMARY KEY (user_id, newspaper_id, mandal_id),
+    FOREIGN KEY (user_id) REFERENCES USER_DETAILS(UserID),
+    FOREIGN KEY (newspaper_id) REFERENCES VENDOR_DYNAMIC_GENERIC(DYNAMIC_ID), -- Assuming newspaper_id is the primary key in VENDOR_DYNAMIC_GENERIC
+    FOREIGN KEY (batch_id) REFERENCES MASTER_BATCH_JOBS(batch_id)
+);
 
 
 
@@ -152,6 +140,6 @@ END;
 DECLARE
     loc_name VARCHAR2(100);
 BEGIN
-    loc_name := generate_location_name(9, 24, 3, 1); -- Example IDs, replace with actual IDs
+    loc_name := generate_location_name(9, 24, 3, 1); 
     DBMS_OUTPUT.PUT_LINE('Location Name: ' || loc_name);
 END;
