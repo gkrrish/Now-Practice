@@ -33,15 +33,14 @@ public class UserRegistrationServiceImpl implements UserRegistrationService {
 		 * UserDetails (); if (userOptional.isPresent()) { user = userOptional.get(); }
 		 */
 		UserDetails user=new UserDetails();
-		user.setLanguages("Telugu");
-		user.setMobileNumber(mobileNumber);
-		user.setSelectedNewspapers("Telugu");
-		ExistingMemberResponse response = new ExistingMemberResponse();
-		response.setMobileNumber(user.getMobileNumber());
-		response.setLanguages(user.getLanguages());
-		response.setSelectedNewspapers(user.getSelectedNewspapers());
-
-		return response;
+		/*
+		 * user.setLanguages("Telugu"); user.setMobileNumber(mobileNumber);
+		 * user.setSelectedNewspapers("Telugu"); ExistingMemberResponse response = new
+		 * ExistingMemberResponse(); response.setMobileNumber(user.getMobileNumber());
+		 * response.setLanguages(user.getLanguages());
+		 * response.setSelectedNewspapers(user.getSelectedNewspapers());
+		 */
+		return null;
 	}
 
 }

@@ -4,6 +4,8 @@ CREATE TABLE MASTER_COUNTRIES (
     country_name VARCHAR(100),
     telephone_code VARCHAR(20) -- Adjust the size according to your needs
 );
+
+
 CREATE TABLE MASTER_INDIAN_NEWSPAPER_LANGUAGES (
     language_id INT PRIMARY KEY,
     language_name VARCHAR(100)
@@ -23,6 +25,8 @@ CREATE TABLE MASTER_TELANGANA_DISTRICTS (
     state_id INT,
     FOREIGN KEY (state_id) REFERENCES MASTER_STATES(state_id)
 );
+
+
 CREATE TABLE MASTER_ANDHRAPRADESH_DISTRICTS (
     district_id INT PRIMARY KEY,
     district_name VARCHAR(100),
@@ -36,12 +40,14 @@ CREATE TABLE MASTER_TELANGANA_MANDALS (
     district_id INT,
     FOREIGN KEY (district_id) REFERENCES MASTER_TELANGANA_DISTRICTS(district_id)
 );
+
 CREATE TABLE MASTER_ANDHRAPRADESH_MANDALS (
     mandal_id INT PRIMARY KEY,
     mandal_name VARCHAR(100),
     district_id INT,
     FOREIGN KEY (district_id) REFERENCES MASTER_ANDHRAPRADESH_DISTRICTS(district_id)
 );
+
 CREATE TABLE MASTER_STATEWISE_TELANGANA_LOCATIONS (
     location_id INT PRIMARY KEY,
     location_name VARCHAR(100),
@@ -89,27 +95,29 @@ CREATE TABLE VENDOR_TELANGANA_EENADU (
         (UPPER(SubscriptionType) = 'FREE' AND SubscriptionFee = 0) OR
         (UPPER(SubscriptionType) = 'PAID' AND SubscriptionFee > 0)
     ),
-    FOREIGN KEY (mandal_id) REFERENCES MASTER_TELANGANA_MANDALS(mandal_id),
+    FOREIGN KEY (mandal_id) REFERENCES MASTER_STATEWISE_TELANGANA_LOCATIONS(location_id),
     FOREIGN KEY (newspaper_language) REFERENCES MASTER_INDIAN_NEWSPAPER_LANGUAGES(language_id)
 );
+
 
 -- Create the VENDOR_DYNAMIC_GENERIC table
 CREATE TABLE VENDOR_DYNAMIC_GENERIC (
     dynamic_id INT PRIMARY KEY,
-    eenadu_id INT NOT NULL,
-    CONSTRAINT FK_EenaduId FOREIGN KEY (eenadu_id) REFERENCES VENDOR_TELANGANA_EENADU(newspaper_id)
+    telangana_eenadu_id INT NOT NULL,
+    CONSTRAINT FK_EenaduId FOREIGN KEY (telangana_eenadu_id) REFERENCES VENDOR_TELANGANA_EENADU(newspaper_id)
 );
 
 CREATE TABLE UX_USER_SUBSCRIPTION (
     user_id INT,
     newspaper_id INT,
-    mandal_id INT,
     batch_id NUMBER,
     user_eligible NUMBER(1,0) DEFAULT 1,
+    location_id INT,
     
-    CONSTRAINT PK_UX_USER_SUBSCRIPTION PRIMARY KEY (user_id, newspaper_id, mandal_id),
+    CONSTRAINT PK_UX_USER_SUBSCRIPTION PRIMARY KEY (user_id, newspaper_id,location_id),
     FOREIGN KEY (user_id) REFERENCES USER_DETAILS(UserID),
-    FOREIGN KEY (newspaper_id) REFERENCES VENDOR_DYNAMIC_GENERIC(DYNAMIC_ID), -- Assuming newspaper_id is the primary key in VENDOR_DYNAMIC_GENERIC
+    FOREIGN KEY (newspaper_id) REFERENCES VENDOR_DYNAMIC_GENERIC(DYNAMIC_ID),
+    FOREIGN KEY (location_id) REFERENCES MASTER_STATEWISE_TELANGANA_LOCATIONS(LOCATION_ID),
     FOREIGN KEY (batch_id) REFERENCES MASTER_BATCH_JOBS(batch_id)
 );
 
