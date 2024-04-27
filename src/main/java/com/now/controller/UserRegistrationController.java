@@ -7,12 +7,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.now.exceptions.InvalidMobileNumberException;
 import com.now.request.WelcomeRequest;
 import com.now.response.ExistingMemberResponse;
 import com.now.response.WelcomeResponse;
 import com.now.service.UserRegistrationService;
-import com.now.util.PhoneNumberUtil;
 import com.now.util.StringUtil;
 
 @RestController

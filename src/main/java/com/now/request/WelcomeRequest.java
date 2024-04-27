@@ -14,7 +14,7 @@ public class WelcomeRequest {
 	private String regexAnyString;
 
 	@NotBlank(message = "Mobile number required")
-	@Pattern(regexp = "^\\+91\\d{10}$", message = "Invalid Indian mobile number")
+	@Pattern(regexp = "^\\+91[1-9]\\d{9}$", message = "Invalid Indian mobile number")
 	private String mobileNumber;
 
 }
