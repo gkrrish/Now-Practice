@@ -1,2 +1,1 @@
-INSERT INTO USER_DETAILS("mobile_number", "languages", "selected_newspapers") VALUES ('9876543210', 'English', 'Times of India-HYDERABAD');
-INSERT INTO USER_DETAILS("mobile_number", "languages", "selected_newspapers") VALUES ('9876543211', 'Eenadu', 'Eenadu-HYDERABAD');
+
