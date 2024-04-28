@@ -66,7 +66,7 @@ CREATE TABLE MASTER_STATEWISE_TELANGANA_LOCATIONS (
 
 CREATE TABLE USER_DETAILS(
     UserID NUMBER(10) PRIMARY KEY,
-    mobileNumber VARCHAR2(13),
+    mobileNumber VARCHAR2(13) UNIQUE,
     Username VARCHAR2(50),
     Age NUMBER(3),
     Gender VARCHAR2(10) CHECK (Gender IN ('Male', 'Female', 'Other')),
