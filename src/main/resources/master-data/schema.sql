@@ -66,6 +66,7 @@ CREATE TABLE MASTER_STATEWISE_TELANGANA_LOCATIONS (
 
 CREATE TABLE USER_DETAILS(
     UserID NUMBER(10) PRIMARY KEY,
+    mobileNumber VARCHAR2(13),
     Username VARCHAR2(50),
     Age NUMBER(3),
     Gender VARCHAR2(10) CHECK (Gender IN ('Male', 'Female', 'Other')),
@@ -86,7 +87,7 @@ CREATE TABLE MASTER_BATCH_JOBS (
 
 CREATE TABLE VENDOR_TELANGANA_EENADU (
     newspaper_id INT PRIMARY KEY,
-    mandal_id INT,
+    location_id INT,
     newspaper_name VARCHAR(100),
     newspaper_language INT,
     SubscriptionType VARCHAR2(10) CHECK (SubscriptionType IN ('FREE', 'PAID')),
@@ -95,10 +96,10 @@ CREATE TABLE VENDOR_TELANGANA_EENADU (
         (UPPER(SubscriptionType) = 'FREE' AND SubscriptionFee = 0) OR
         (UPPER(SubscriptionType) = 'PAID' AND SubscriptionFee > 0)
     ),
-    FOREIGN KEY (mandal_id) REFERENCES MASTER_STATEWISE_TELANGANA_LOCATIONS(location_id),
+    FOREIGN KEY (location_id) REFERENCES MASTER_STATEWISE_TELANGANA_LOCATIONS(location_id),
     FOREIGN KEY (newspaper_language) REFERENCES MASTER_INDIAN_NEWSPAPER_LANGUAGES(language_id)
 );
-
+===============================================================================================================================================
 
 -- Create the VENDOR_DYNAMIC_GENERIC table
 CREATE TABLE VENDOR_DYNAMIC_GENERIC (
@@ -123,7 +124,7 @@ CREATE TABLE UX_USER_SUBSCRIPTION (
 
 
 
-
+=====================================================================================================================================================
 
 -- Create the function generate_location_name in PL/SQL
 CREATE OR REPLACE FUNCTION generate_location_name(country_id INT, state_id INT, district_id INT, mandal_id INT)

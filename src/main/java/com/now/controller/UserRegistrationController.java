@@ -7,11 +7,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.now.entity.UserDetails;
 import com.now.request.WelcomeRequest;
-import com.now.response.ExistingMemberResponse;
-import com.now.response.WelcomeResponse;
 import com.now.service.UserRegistrationService;
-import com.now.util.StringUtil;
 
 @RestController
 @RequestMapping("/api/user")
@@ -20,40 +18,13 @@ public class UserRegistrationController {
 	@Autowired
 	private UserRegistrationService userRegistrationService;
 
-	@PostMapping("/welcome")
-	public ResponseEntity<?> welcomeUser(@RequestBody WelcomeRequest request) {
-		/*
-		String validMobileNumber = null;
-		validMobileNumber = PhoneNumberUtil.validateMobileNumber(request.getMobileNumber());
+	@PostMapping("/welcome") // fake number charges check-whatsapp-bussiness
+	public ResponseEntity<?> welcomeUser(@RequestBody WelcomeRequest welcomeRequest) {
+		
+		UserDetails userDetails = userRegistrationService.isMobileNumberPresent(welcomeRequest.getMobileNumber());
+		System.out.println(userDetails.getMobileNumber());
+		
+		return ResponseEntity.ok("welcome-okay");
 
-		if (validMobileNumber == null) {
-			throw new InvalidMobileNumberException("Mobile Number is not valid");
-		}
-
-		if (userRegistrationService.isMobileNumberPresent(validMobileNumber)) {
-			ExistingMemberResponse subscriptionDetails = userRegistrationService.getSubscriptionDetails(validMobileNumber);
-			return ResponseEntity.ok(subscriptionDetails);
-		} else {
-			WelcomeResponse welcomeResponse = new WelcomeResponse();
-			welcomeResponse.setMessage("Welcome ! News on whatsApp service, we glad to hear! that you are intrested! please select the below newspapers we are going to send on scheuled time daily" );
-			welcomeResponse.setLanguage(StringUtil.LANGUAGE_LIST);
-			return ResponseEntity.ok(welcomeResponse);
-		}
-		*/
-		ExistingMemberResponse subscriptionDetails = userRegistrationService.getSubscriptionDetails(request.getMobileNumber());
-		if(subscriptionDetails.getSelectedNewspapers().length()>1) {//temporary method
-			return ResponseEntity.ok(subscriptionDetails);
-		}else {
-			WelcomeResponse welcomeResponse = new WelcomeResponse();
-			welcomeResponse.setMessage("Welcome ! News on whatsApp service, we glad to hear! that you are intrested! please select the below newspapers we are going to send on scheuled time daily" );
-			welcomeResponse.setLanguage(StringUtil.LANGUAGE_LIST);
-			return ResponseEntity.ok(welcomeResponse);
-		}
 	}
 }
-//display the news papers list for below 
-//by language
-//by category
-//by location
-
-
