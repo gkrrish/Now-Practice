@@ -131,7 +131,7 @@ CREATE TABLE USER_SUBSCRIPTION (
 =============================================================================================================================
 
 -- Create the function generate_location_name in PL/SQL
-create or replace FUNCTION generate_location_name(country_id INT, state_id INT, district_id INT, mandal_id INT)
+CREATE OR REPLACE FUNCTION generate_location_name(country_id INT, state_id INT, district_id INT, mandal_id INT)
 RETURN VARCHAR2 AS
     country_name VARCHAR2(100);
     state_name VARCHAR2(100);
@@ -141,8 +141,8 @@ RETURN VARCHAR2 AS
 BEGIN
     SELECT country_name INTO country_name FROM MASTER_COUNTRIES WHERE country_id = generate_location_name.country_id;
     SELECT state_name INTO state_name FROM MASTER_STATES WHERE state_id = generate_location_name.state_id;
-    SELECT district_name INTO district_name FROM MASTER_DISTRICTS WHERE district_id = generate_location_name.district_id;
-    SELECT mandal_name INTO mandal_name FROM MASTER_MANDALS WHERE mandal_id = generate_location_name.mandal_id;
+    SELECT district_name INTO district_name FROM MASTER_TELANGANA_DISTRICTS WHERE district_id = generate_location_name.district_id;
+    SELECT mandal_name INTO mandal_name FROM MASTER_TELANGANA_MANDALS WHERE mandal_id = generate_location_name.mandal_id;
     
     result := country_name || '_' || state_name || '_' || district_name || '_' || mandal_name;
     
