@@ -54,8 +54,14 @@ CONNECT BY LEVEL <= 48;
 COMMIT;
 ----------------------------------------------
 
-INSERT INTO VENDOR_TELANGANA_EENADU (newspaper_id, location_id, newspaper_name, newspaper_language, SubscriptionType, SubscriptionFee)
-VALUES (1, 1, 'Telangana Eenadu-Hyderabad', 3, 'FREE', 0.00);
+INSERT INTO VENDOR_TELANGANA_EENADU (newspaper_id, location_id, newspaper_name, newspaper_language, subscription_type_id)
+VALUES (1, 1, 'Telangana Eenadu-Hyderabad', 3, 1);
+
+INSERT INTO VENDOR_TELANGANA_VAARTHA (newspaper_id, location_id, newspaper_name, newspaper_language, subscription_type_id)
+VALUES (101, 1, 'Telangana Vaartha', 1, 1);
+
+
+
 
 
 INSERT INTO VENDOR_DYNAMIC_GENERIC (dynamic_id, telangana_eenadu_id)
