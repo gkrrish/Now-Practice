@@ -103,7 +103,7 @@ CREATE TABLE VENDOR_TELANGANA_VAARTHA (
 -- Create the VENDOR_DYNAMIC_GENERIC table
 CREATE TABLE VENDOR_DYNAMIC_GENERIC (
     dynamic_id INT PRIMARY KEY,
-    telangana_eenadu_id INT NOT NULL,
+    telangana_eenadu_id INT,
     CONSTRAINT FK_EenaduId FOREIGN KEY (telangana_eenadu_id) REFERENCES VENDOR_TELANGANA_EENADU(newspaper_id)
 );
 
