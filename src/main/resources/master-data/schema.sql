@@ -1,14 +1,12 @@
+CREATE TABLE MASTER_INDIAN_NEWSPAPER_LANGUAGES (
+    language_id INT PRIMARY KEY,
+    language_name VARCHAR(100)
+);
 
 CREATE TABLE MASTER_COUNTRIES (
     country_id INT PRIMARY KEY,
     country_name VARCHAR(100),
-    telephone_code VARCHAR(20) -- Adjust the size according to your needs
-);
-
-
-CREATE TABLE MASTER_INDIAN_NEWSPAPER_LANGUAGES (
-    language_id INT PRIMARY KEY,
-    language_name VARCHAR(100)
+    telephone_code VARCHAR(20)
 );
 
 
@@ -19,7 +17,7 @@ CREATE TABLE MASTER_STATES (
     FOREIGN KEY (country_id) REFERENCES MASTER_COUNTRIES(country_id)
 );
 
-CREATE TABLE MASTER_TELANGANA_DISTRICTS (
+CREATE TABLE MASTER_DISTRICTS (
     district_id INT PRIMARY KEY,
     district_name VARCHAR(100),
     state_id INT,
@@ -27,14 +25,14 @@ CREATE TABLE MASTER_TELANGANA_DISTRICTS (
 );
 
 
-CREATE TABLE MASTER_TELANGANA_MANDALS (
+CREATE TABLE MASTER_MANDALS (
     mandal_id INT PRIMARY KEY,
     mandal_name VARCHAR(100),
     district_id INT,
-    FOREIGN KEY (district_id) REFERENCES MASTER_TELANGANA_DISTRICTS(district_id)
+    FOREIGN KEY (district_id) REFERENCES MASTER_DISTRICTS(district_id)
 );
 
-CREATE TABLE MASTER_STATEWISE_TELANGANA_LOCATIONS (
+CREATE TABLE MASTER_STATEWISE_LOCATIONS (
     location_id INT PRIMARY KEY,
     location_name VARCHAR(100),
     country_id INT,
@@ -43,9 +41,11 @@ CREATE TABLE MASTER_STATEWISE_TELANGANA_LOCATIONS (
     mandal_id INT,
     FOREIGN KEY (country_id) REFERENCES MASTER_COUNTRIES(country_id),
     FOREIGN KEY (state_id) REFERENCES MASTER_STATES(state_id),
-    FOREIGN KEY (district_id) REFERENCES MASTER_TELANGANA_DISTRICTS(district_id),
-    FOREIGN KEY (mandal_id) REFERENCES MASTER_TELANGANA_MANDALS(mandal_id)
+    FOREIGN KEY (district_id) REFERENCES MASTER_DISTRICTS(district_id),
+    FOREIGN KEY (mandal_id) REFERENCES MASTER_MANDALS(mandal_id)
 );
+=================================Master details completed========================================
+
 
 CREATE TABLE USER_DETAILS(
     UserID NUMBER(10) PRIMARY KEY,
@@ -57,6 +57,8 @@ CREATE TABLE USER_DETAILS(
     RegistrationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     Active CHAR(1) DEFAULT 'Y' CHECK (Active IN ('Y', 'N'))
 );
+
+================================User Details Completed==============================================
 
 CREATE TABLE MASTER_BATCH_JOBS (
     BATCH_ID NUMBER PRIMARY KEY,
@@ -75,80 +77,58 @@ CREATE TABLE SUBSCRIPTION_TYPE (
   )
 );
 
-CREATE TABLE VENDOR_TELANGANA_EENADU (
-  newspaper_id INT PRIMARY KEY,
-  location_id INT,
-  newspaper_name VARCHAR(100),
-  newspaper_language INT,
-  subscription_type_id INT,
-  FOREIGN KEY (location_id) REFERENCES MASTER_STATEWISE_TELANGANA_LOCATIONS(location_id),
-  FOREIGN KEY (newspaper_language) REFERENCES MASTER_INDIAN_NEWSPAPER_LANGUAGES(language_id),
-  FOREIGN KEY (subscription_type_id) REFERENCES SUBSCRIPTION_TYPE(subscriptiontypeid)
+==================================batch timing and Subscription charges completed==========================
+CREATE TABLE MASTER_CATEGORY_TYPE(
+    category_id INT PRIMARY KEY,
+    category_name VARCHAR2(100)
 );
 
 
-CREATE TABLE VENDOR_TELANGANA_VAARTHA (
-  newspaper_id INT PRIMARY KEY,
-  location_id INT,
-  newspaper_name VARCHAR(100),
-  newspaper_language INT,
-  subscription_type_id INT,
-  FOREIGN KEY (location_id) REFERENCES MASTER_STATEWISE_TELANGANA_LOCATIONS(location_id),
-  FOREIGN KEY (newspaper_language) REFERENCES MASTER_INDIAN_NEWSPAPER_LANGUAGES(language_id),
-  FOREIGN KEY (subscription_type_id) REFERENCES SUBSCRIPTION_TYPE(subscriptiontypeid)
+CREATE TABLE VENDOR_DETAILS (
+    vendorid INT PRIMARY KEY,
+    vendorname VARCHAR2(255),
+    newspaper_language INT,
+    vendorcontactdetails VARCHAR2(512),
+    vendorstatus VARCHAR2(10) CHECK (vendorstatus IN ('active', 'inactive')), 
+
+    FOREIGN KEY (newspaper_language) REFERENCES MASTER_INDIAN_NEWSPAPER_LANGUAGES(language_id)
 );
 
-===============================================================================================================================================
+==================================BASIC VENDOR DETAILS Completed==========================================================
 
--- Create the VENDOR_DYNAMIC_GENERIC table
-CREATE TABLE VENDOR_DYNAMIC_GENERIC (
-    dynamic_id INT PRIMARY KEY,
-    telangana_eenadu_id INT,
-    CONSTRAINT FK_EenaduId FOREIGN KEY (telangana_eenadu_id) REFERENCES VENDOR_TELANGANA_EENADU(newspaper_id)
+
+CREATE TABLE VENDORS (
+    newspaper_id INT PRIMARY KEY,
+    location_id INT,
+    newspaper_name VARCHAR2(100),
+    newspaper_language INT,
+    subscription_type_id INT,
+    publication_type VARCHAR2(10) CHECK (publication_type IN ('Newspaper', 'Magazine')),
+    vendor_id INT, 
+
+    FOREIGN KEY (location_id) REFERENCES MASTER_STATEWISE_LOCATIONS(location_id),
+    FOREIGN KEY (newspaper_language) REFERENCES MASTER_INDIAN_NEWSPAPER_LANGUAGES(language_id),
+    FOREIGN KEY (subscription_type_id) REFERENCES SUBSCRIPTION_TYPE(subscriptiontypeid),
+    FOREIGN KEY (vendor_id) REFERENCES VENDOR_DETAILS(vendorid) -- Foreign key reference to VENDOR_DETAILS
 );
 
---**********************Frequently Needed this******************************
--- Alter the VENDOR_DYNAMIC_GENERIC table to add columns
-ALTER TABLE VENDOR_DYNAMIC_GENERIC
-ADD telangana_vaartha_id INT;
+==================================VENDOR RELATED DETAILS COMPLETED==========================================================
 
--- Add a foreign key constraint to reference VENDOR_TELANGANA_VAARTHA
-ALTER TABLE VENDOR_DYNAMIC_GENERIC
-ADD CONSTRAINT FK_VaarthaId
-FOREIGN KEY (telangana_vaartha_id)
-REFERENCES VENDOR_TELANGANA_VAARTHA(newspaper_id);
-
-CREATE TABLE MASTER_GENERIC_LOCATIONS (
-    genericlocationid INT PRIMARY KEY,
-    telangana_location_id INT,
-    CONSTRAINT FK_TelanganaLocationId 
-        FOREIGN KEY (telangana_location_id) 
-        REFERENCES MASTER_STATEWISE_TELANGANA_LOCATIONS(location_id)
-);
-ALTER TABLE MASTER_GENERIC_LOCATIONS
-ADD andhrapradesh_location_id INT,
-ADD CONSTRAINT FK_AndhraPradeshLocationId
-    FOREIGN KEY (andhrapradesh_location_id)
-    REFERENCES MASTER_STATEWISE_ANDHRAPRADESH_LOCATIONS(location_id);
---**********************************************************
-
-CREATE TABLE UX_USER_SUBSCRIPTION (
+CREATE TABLE USER_SUBSCRIPTION (
     user_id INT,
     newspaper_id INT,
     batch_id NUMBER,
     user_eligible NUMBER(1,0) DEFAULT 1,
     location_id INT,
     
-    CONSTRAINT PK_UX_USER_SUBSCRIPTION PRIMARY KEY (user_id, newspaper_id,location_id),
+    CONSTRAINT PK_UX_USER_SUBSCRIPTION PRIMARY KEY (user_id, newspaper_id, location_id),
     FOREIGN KEY (user_id) REFERENCES USER_DETAILS(UserID),
-    FOREIGN KEY (newspaper_id) REFERENCES VENDOR_DYNAMIC_GENERIC(DYNAMIC_ID),
-    FOREIGN KEY (location_id) REFERENCES MASTER_GENERIC_LOCATIONS(LOCATION_ID),
-    FOREIGN KEY (batch_id) REFERENCES MASTER_BATCH_JOBS(batch_id)
+    FOREIGN KEY (newspaper_id) REFERENCES VENDORS(newspaper_id), 
+    FOREIGN KEY (location_id) REFERENCES MASTER_STATEWISE_LOCATIONS(location_id),
+    FOREIGN KEY (batch_id) REFERENCES MASTER_BATCH_JOBS(BATCH_ID) 
 );
 
-
-
-=====================================================================================================================================================
+=============================================================================================================================
 
 -- Create the function generate_location_name in PL/SQL
 CREATE OR REPLACE FUNCTION generate_location_name(country_id INT, state_id INT, district_id INT, mandal_id INT)
@@ -177,47 +157,3 @@ BEGIN
     DBMS_OUTPUT.PUT_LINE('Location Name: ' || loc_name);
 END;
 ===================================================================================================================================
-
-    CREATE TABLE MASTER_ANDHRAPRADESH_DISTRICTS (
-    district_id INT PRIMARY KEY,
-    district_name VARCHAR(100),
-    state_id INT,
-    FOREIGN KEY (state_id) REFERENCES MASTER_STATES(state_id)
-    );
-
-    
-    CREATE TABLE MASTER_ANDHRAPRADESH_MANDALS (
-    mandal_id INT PRIMARY KEY,
-    mandal_name VARCHAR(100),
-    district_id INT,
-    FOREIGN KEY (district_id) REFERENCES MASTER_ANDHRAPRADESH_DISTRICTS(district_id)
-    );
-    
-    CREATE TABLE MASTER_STATEWISE_ANDHRAPRADESH_LOCATIONS (
-    location_id INT PRIMARY KEY,
-    location_name VARCHAR(100),
-    country_id INT,
-    state_id INT,
-    district_id INT,
-    mandal_id INT,
-    FOREIGN KEY (country_id) REFERENCES MASTER_COUNTRIES(country_id),
-    FOREIGN KEY (state_id) REFERENCES MASTER_STATES(state_id),
-    FOREIGN KEY (district_id) REFERENCES MASTER_ANDHRAPRADESH_DISTRICTS(district_id),
-    FOREIGN KEY (mandal_id) REFERENCES MASTER_ANDHRAPRADESH_MANDALS(mandal_id)
-    );
-
-========================================================================================================================================
-CREATE TABLE UX_Telangana_Eenadu (
-    UxTelanganaEenaduId INT PRIMARY KEY,
-    date DATE,
-    s3bucketlocation VARCHAR(255), 
-    newspaperid INT,
-    CONSTRAINT FK_NewspaperId FOREIGN KEY (newspaperid) REFERENCES VENDOR_TELANGANA_EENADU(newspaperid)
-);
-CREATE TABLE UX_Telangana_VAARTHA (
-    UxTelanganaEenaduId INT PRIMARY KEY,
-    date DATE,
-    s3bucketlocation VARCHAR(255), 
-    newspaperid INT,
-    CONSTRAINT FK_NewspaperId FOREIGN KEY (newspaperid) REFERENCES VENDOR_TELANGANA_VAARTHA(newspaperid)
-);
