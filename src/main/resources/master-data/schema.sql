@@ -81,7 +81,6 @@ CREATE TABLE VENDOR_TELANGANA_EENADU (
   newspaper_name VARCHAR(100),
   newspaper_language INT,
   subscription_type_id INT,
-  SubscriptionFee DECIMAL(10, 2),
   FOREIGN KEY (location_id) REFERENCES MASTER_STATEWISE_TELANGANA_LOCATIONS(location_id),
   FOREIGN KEY (newspaper_language) REFERENCES MASTER_INDIAN_NEWSPAPER_LANGUAGES(language_id),
   FOREIGN KEY (subscription_type_id) REFERENCES SUBSCRIPTION_TYPE(subscriptiontypeid)
@@ -94,7 +93,6 @@ CREATE TABLE VENDOR_TELANGANA_VAARTHA (
   newspaper_name VARCHAR(100),
   newspaper_language INT,
   subscription_type_id INT,
-  SubscriptionFee DECIMAL(10, 2),
   FOREIGN KEY (location_id) REFERENCES MASTER_STATEWISE_TELANGANA_LOCATIONS(location_id),
   FOREIGN KEY (newspaper_language) REFERENCES MASTER_INDIAN_NEWSPAPER_LANGUAGES(language_id),
   FOREIGN KEY (subscription_type_id) REFERENCES SUBSCRIPTION_TYPE(subscriptiontypeid)
