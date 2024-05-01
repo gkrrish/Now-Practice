@@ -207,3 +207,17 @@ END;
     );
 
 ========================================================================================================================================
+CREATE TABLE UX_Telangana_Eenadu (
+    UxTelanganaEenaduId INT PRIMARY KEY,
+    date DATE,
+    s3bucketlocation VARCHAR(255), 
+    newspaperid INT,
+    CONSTRAINT FK_NewspaperId FOREIGN KEY (newspaperid) REFERENCES VENDOR_TELANGANA_EENADU(newspaperid)
+);
+CREATE TABLE UX_Telangana_VAARTHA (
+    UxTelanganaEenaduId INT PRIMARY KEY,
+    date DATE,
+    s3bucketlocation VARCHAR(255), 
+    newspaperid INT,
+    CONSTRAINT FK_NewspaperId FOREIGN KEY (newspaperid) REFERENCES VENDOR_TELANGANA_VAARTHA(newspaperid)
+);
