@@ -64,36 +64,42 @@ CREATE TABLE MASTER_BATCH_JOBS (
     INTERVAL_MINUTES NUMBER(2) DEFAULT 30
 );
 
+CREATE TABLE SUBSCRIPTION_TYPE (
+  subscriptiontypeid INT PRIMARY KEY,
+  subscriptiontype VARCHAR2(10) CHECK (subscriptiontype IN ('FREE', 'PAID')),
+  subscriptionduration VARCHAR2(10),
+  subscriptionfee DECIMAL(10, 2) CHECK (subscriptionfee >= 0),
+  CONSTRAINT chk_subscription_type_fee CHECK (
+    (UPPER(subscriptiontype) = 'FREE' AND subscriptionfee = 0) OR
+    (UPPER(subscriptiontype) = 'PAID' AND subscriptionfee > 0)
+  )
+);
+
 CREATE TABLE VENDOR_TELANGANA_EENADU (
-    newspaper_id INT PRIMARY KEY,
-    location_id INT,
-    newspaper_name VARCHAR(100),
-    newspaper_language INT,
-    SubscriptionType VARCHAR2(10) CHECK (SubscriptionType IN ('FREE', 'PAID')),
-    SubscriptionFee DECIMAL(10, 2),
-    CONSTRAINT CHK_SubscriptionFee CHECK (
-        (UPPER(SubscriptionType) = 'FREE' AND SubscriptionFee = 0) OR
-        (UPPER(SubscriptionType) = 'PAID' AND SubscriptionFee > 0)
-    ),
-    FOREIGN KEY (location_id) REFERENCES MASTER_STATEWISE_TELANGANA_LOCATIONS(location_id),
-    FOREIGN KEY (newspaper_language) REFERENCES MASTER_INDIAN_NEWSPAPER_LANGUAGES(language_id)
+  newspaper_id INT PRIMARY KEY,
+  location_id INT,
+  newspaper_name VARCHAR(100),
+  newspaper_language INT,
+  subscription_type_id INT,
+  SubscriptionFee DECIMAL(10, 2),
+  FOREIGN KEY (location_id) REFERENCES MASTER_STATEWISE_TELANGANA_LOCATIONS(location_id),
+  FOREIGN KEY (newspaper_language) REFERENCES MASTER_INDIAN_NEWSPAPER_LANGUAGES(language_id),
+  FOREIGN KEY (subscription_type_id) REFERENCES SUBSCRIPTION_TYPE(subscriptiontypeid)
 );
 
 
 CREATE TABLE VENDOR_TELANGANA_VAARTHA (
-    newspaper_id INT PRIMARY KEY,
-    location_id INT,
-    newspaper_name VARCHAR(100),
-    newspaper_language INT,
-    SubscriptionType VARCHAR2(10) CHECK (SubscriptionType IN ('FREE', 'PAID')),
-    SubscriptionFee DECIMAL(10, 2),
-    CONSTRAINT CHK_SubscriptionFee CHECK (
-        (UPPER(SubscriptionType) = 'FREE' AND SubscriptionFee = 0) OR
-        (UPPER(SubscriptionType) = 'PAID' AND SubscriptionFee > 0)
-    ),
-    FOREIGN KEY (location_id) REFERENCES MASTER_STATEWISE_TELANGANA_LOCATIONS(location_id),
-    FOREIGN KEY (newspaper_language) REFERENCES MASTER_INDIAN_NEWSPAPER_LANGUAGES(language_id)
+  newspaper_id INT PRIMARY KEY,
+  location_id INT,
+  newspaper_name VARCHAR(100),
+  newspaper_language INT,
+  subscription_type_id INT,
+  SubscriptionFee DECIMAL(10, 2),
+  FOREIGN KEY (location_id) REFERENCES MASTER_STATEWISE_TELANGANA_LOCATIONS(location_id),
+  FOREIGN KEY (newspaper_language) REFERENCES MASTER_INDIAN_NEWSPAPER_LANGUAGES(language_id),
+  FOREIGN KEY (subscription_type_id) REFERENCES SUBSCRIPTION_TYPE(subscriptiontypeid)
 );
+
 ===============================================================================================================================================
 
 -- Create the VENDOR_DYNAMIC_GENERIC table
