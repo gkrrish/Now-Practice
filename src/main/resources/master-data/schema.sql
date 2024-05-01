@@ -107,6 +107,18 @@ CREATE TABLE VENDOR_DYNAMIC_GENERIC (
     CONSTRAINT FK_EenaduId FOREIGN KEY (telangana_eenadu_id) REFERENCES VENDOR_TELANGANA_EENADU(newspaper_id)
 );
 
+--**********************Frequently Needed this******************************
+-- Alter the VENDOR_DYNAMIC_GENERIC table to add columns
+ALTER TABLE VENDOR_DYNAMIC_GENERIC
+ADD telangana_vaartha_id INT;
+
+-- Add a foreign key constraint to reference VENDOR_TELANGANA_VAARTHA
+ALTER TABLE VENDOR_DYNAMIC_GENERIC
+ADD CONSTRAINT FK_VaarthaId
+FOREIGN KEY (telangana_vaartha_id)
+REFERENCES VENDOR_TELANGANA_VAARTHA(newspaper_id);
+--**********************************************************
+
 CREATE TABLE UX_USER_SUBSCRIPTION (
     user_id INT,
     newspaper_id INT,
