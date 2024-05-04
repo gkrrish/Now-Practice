@@ -102,13 +102,15 @@ CREATE TABLE VENDORS (
     newspaper_name VARCHAR2(100),
     newspaper_language INT,
     subscription_type_id INT,
+    category_id INT,
     publication_type VARCHAR2(10) CHECK (publication_type IN ('Newspaper', 'Magazine')),
     vendor_id INT, 
 
     FOREIGN KEY (location_id) REFERENCES MASTER_STATEWISE_LOCATIONS(location_id),
     FOREIGN KEY (newspaper_language) REFERENCES MASTER_INDIAN_NEWSPAPER_LANGUAGES(language_id),
     FOREIGN KEY (subscription_type_id) REFERENCES SUBSCRIPTION_TYPE(subscriptiontypeid),
-    FOREIGN KEY (vendor_id) REFERENCES VENDOR_DETAILS(vendorid) -- Foreign key reference to VENDOR_DETAILS
+    FOREIGN KEY (vendor_id) REFERENCES VENDOR_DETAILS(vendorid),
+    FOREIGN KEY (category_id) REFERENCES MASTER_CATEGORY_TYPE(category_id)
 );
 
 ==================================VENDOR RELATED DETAILS COMPLETED==========================================================
