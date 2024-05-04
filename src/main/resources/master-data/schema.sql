@@ -90,8 +90,6 @@ CREATE TABLE VENDOR_DETAILS (
     newspaper_language INT,
     vendorcontactdetails VARCHAR2(512),
     vendorstatus VARCHAR2(10) CHECK (vendorstatus IN ('active', 'inactive')), 
-	category_id INT,
-	FOREIGN KEY (category_id) REFERENCES MASTER_CATEGORY_TYPE(category_id);
     FOREIGN KEY (newspaper_language) REFERENCES MASTER_INDIAN_NEWSPAPER_LANGUAGES(language_id)
 );
 
