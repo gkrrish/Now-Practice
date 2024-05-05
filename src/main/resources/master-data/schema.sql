@@ -87,10 +87,10 @@ CREATE TABLE MASTER_CATEGORY_TYPE(
 CREATE TABLE VENDOR_DETAILS (
     vendorid INT PRIMARY KEY,
     vendorname VARCHAR2(255),
-    newspaper_language INT,
     vendorcontactdetails VARCHAR2(512),
     vendorstatus VARCHAR2(10) CHECK (vendorstatus IN ('active', 'inactive')), 
-    FOREIGN KEY (newspaper_language) REFERENCES MASTER_INDIAN_NEWSPAPER_LANGUAGES(language_id)
+	category_id INT,
+	FOREIGN KEY (category_id) REFERENCES MASTER_CATEGORY_TYPE(category_id)
 );
 
 ==================================BASIC VENDOR DETAILS Completed==========================================================
