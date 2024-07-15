@@ -18,7 +18,7 @@ public class UserRegistrationController {
 	@Autowired
 	private UserRegistrationService userRegistrationService;
 
-	@PostMapping("/welcome") // fake number charges check-whatsapp-bussiness
+	@PostMapping("/welcome") // fake number charges 
 	public ResponseEntity<?> welcomeUser(@RequestBody WelcomeRequest welcomeRequest) {
 		
 		UserDetails userDetails = userRegistrationService.isMobileNumberPresent(welcomeRequest.getMobileNumber());
